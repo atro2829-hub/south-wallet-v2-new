@@ -31,22 +31,13 @@ jobs:
         working-directory: south-admin
         run: npx cap sync android
 
-      - name: Decode keystore
-        working-directory: south-admin/android
-        run: |
-          echo "${{ secrets.ANDROID_ADMIN_KEYSTORE }}" | base64 -d > south-admin.jks
-          printf 'storeFile=south-admin.jks\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' \
-            "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
-            "${{ secrets.ANDROID_ADMIN_KEY_ALIAS }}" \
-            "${{ secrets.ANDROID_ADMIN_KEY_PASSWORD }}" > keystore.properties
-
       - name: Build APK
         working-directory: south-admin/android
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleDebug --no-daemon
           mkdir -p ../outputs
-          cp app/build/outputs/apk/release/app-release.apk ../outputs/south-wallet-admin.apk
+          cp app/build/outputs/apk/debug/app-debug.apk ../outputs/south-wallet-admin.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
