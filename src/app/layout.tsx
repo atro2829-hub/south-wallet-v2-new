@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/fahed/theme-provider";
 
 export const metadata: Metadata = {
@@ -71,6 +72,7 @@ export default function RootLayout({
           {children}
         </ThemeProvider>
         <Toaster />
+        <SonnerToaster position="top-center" richColors closeButton />
       </body>
     </html>
   );

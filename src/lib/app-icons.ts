@@ -15,6 +15,15 @@ const MAROON_LIGHT = '#8B3A3B';
 const WHITE = '#FFFFFF';
 const ACCENT = '#C41E3A';
 
+
+// ─── Entertainment (الخدمات الترفيهية) — sparkles/ticket ──────────
+const entertainmentSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+  <rect x="8" y="14" width="32" height="20" rx="4" fill="${WHITE}" stroke="${MAROON}" stroke-width="2.5"/>
+  <path d="M8 24 L14 24 M14 20 L14 28 M20 14 L20 34" stroke="${MAROON}" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <circle cx="30" cy="24" r="3" fill="${ACCENT}"/>
+  <path d="M36 21 L37 23 L39 24 L37 25 L36 27 L35 25 L33 24 L35 23 Z" fill="${MAROON}"/>
+</svg>`;
+
 // ─── Recharge (شحن رصيد) — phone with signal ───────────────────────
 const rechargeSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
   <rect x="14" y="6" width="20" height="36" rx="4" fill="${WHITE}" stroke="${MAROON}" stroke-width="2.5"/>
@@ -107,6 +116,7 @@ const favoritesSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height=
 export const appIcons: Record<string, string> = {
   recharge: svg(rechargeSvg),
   games: svg(gamesSvg),
+  entertainment: svg(entertainmentSvg),
   transfer: svg(transferSvg),
   deposit: svg(depositSvg),
   usdt: svg(usdtSvg),

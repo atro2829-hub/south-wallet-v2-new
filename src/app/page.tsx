@@ -42,6 +42,7 @@ const WalletTransferScreen = lazy(() => import('@/components/fahed/wallet-transf
 const EscrowScreen = lazy(() => import('@/components/fahed/escrow-screen'));
 const DirectChatScreen = lazy(() => import('@/components/fahed/direct-chat-screen'));
 const GamesScreen = lazy(() => import('@/components/fahed/games-screen'));
+const EntertainmentScreen = lazy(() => import('@/components/fahed/entertainment-screen'));
 
 // Eagerly loaded components (critical for initial render or frequently used)
 import BottomNav from '@/components/fahed/bottom-nav';
@@ -753,6 +754,7 @@ function AppContent() {
     escrow: EscrowScreen,
     'direct-chat': DirectChatScreen,
     games: GamesScreen,
+    entertainment: EntertainmentScreen,
   };
 
   if (activeScreen in overlayScreens) {

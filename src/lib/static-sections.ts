@@ -1,10 +1,5 @@
 // =====================================================================
 // static-sections.ts — Shared section definitions for South Wallet
-//
-// The `sections` table was dropped from Supabase in migration 033.
-// These static definitions are the source of truth for section structure.
-// Admin controls CONTENT (providers, packages, visibility) via DB;
-// the section STRUCTURE is fixed here at build time.
 // =====================================================================
 
 export interface StaticSection {
@@ -22,24 +17,21 @@ export const STATIC_SECTIONS: StaticSection[] = [
   { id: 'support', label: 'الدعم', iconKey: 'support', screenType: 'support', isUtility: true },
   // ─── Main catalog sections ───
   { id: 'recharge', label: 'شحن رصيد', iconKey: 'recharge', screenType: 'recharge' },
-  { id: 'games', label: 'الألعاب', iconKey: 'games', screenType: 'games' },
-  { id: 'gift-cards', label: 'بطاقات وأكواد', iconKey: 'gift-cards', screenType: 'gift-cards' },
-  { id: 'favorites', label: 'المفضلة', iconKey: 'favorites', screenType: 'favorites' },
+  { id: 'entertainment', label: 'الخدمات الترفيهية', iconKey: 'entertainment', screenType: 'entertainment' },
   { id: 'usdt', label: 'USDT', iconKey: 'usdt', screenType: 'deposit' },
   { id: 'escrow', label: 'وسيط وضمان', iconKey: 'escrow', screenType: 'escrow' },
   { id: 'investment', label: 'استثمار', iconKey: 'investment', screenType: 'investment' },
   { id: 'exchange', label: 'صرافة', iconKey: 'exchange', screenType: 'exchange' },
 ];
 
-// Map screenType to section type used by services-screen internals
+// Map screenType to section type
 function sectionTypeForScreen(screenType: string): string {
   const map: Record<string, string> = {
     'wallet-transfer': 'manual',
     'deposit': 'manual',
     'support': 'manual',
     'recharge': 'manual',
-    'games': 'games',
-    'gift-cards': 'manual',
+    'entertainment': 'entertainment',
     'exchange': 'exchange',
     'escrow': 'escrow',
     'investment': 'investment',
@@ -49,8 +41,6 @@ function sectionTypeForScreen(screenType: string): string {
 
 /**
  * Build the `fbSections` store map from STATIC_SECTIONS.
- * Called when the DB `sections` table is unavailable (dropped in migration 033).
- * Returns a Record<id, DbSection-compatible object> that services-screen can consume.
  */
 export function buildFbSectionsFromStatic(): Record<string, any> {
   const result: Record<string, any> = {};
@@ -75,3 +65,10 @@ export function buildFbSectionsFromStatic(): Record<string, any> {
   });
   return result;
 }
+
+// Entertainment sub-sections
+export const ENTERTAINMENT_SUB_SECTIONS = [
+  { id: 'games', label: 'الألعاب', iconKey: 'games', screenType: 'games' },
+  { id: 'gift-cards', label: 'بطاقات وأكواد', iconKey: 'gift-cards', screenType: 'gift-cards' },
+  { id: 'favorites', label: 'المفضلة', iconKey: 'favorites', screenType: 'favorites' },
+];

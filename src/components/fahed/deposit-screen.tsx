@@ -104,7 +104,7 @@ export default function DepositScreen() {
 
   // Deposit form
   const [depositAmount, setDepositAmount] = useState('');
-  const [depositCurrency] = useState<'USD'>('USD');
+  const [depositCurrency, setDepositCurrency] = useState<'YER' | 'SAR' | 'USD'>('YER');
   const [depositMethod, setDepositMethod] = useState<DepositMethod>('bank_transfer');
   const [receiptImage, setReceiptImage] = useState('');
   const [cardCode, setCardCode] = useState('');
@@ -125,7 +125,7 @@ export default function DepositScreen() {
 
   // Withdraw form
   const [withdrawAmount, setWithdrawAmount] = useState('');
-  const [withdrawCurrency] = useState<'USD'>('USD');
+  const [withdrawCurrency, setWithdrawCurrency] = useState<'YER' | 'SAR' | 'USD'>('YER');
   const [withdrawMethod, setWithdrawMethod] = useState<WithdrawMethod>('bank_transfer');
   const [bankAccountNumber, setBankAccountNumber] = useState('');
   const [bankName, setBankName] = useState('');
@@ -841,9 +841,16 @@ export default function DepositScreen() {
                     style={{ color: isDark ? '#FFF' : '#1a1a1a' }}
                     dir="ltr"
                   />
-                  <span className="text-sm font-medium" style={{ color: isDark ? '#888' : '#AAA' }}>
-                    USD
-                  </span>
+                  <select
+                    value={depositCurrency}
+                    onChange={(e) => setDepositCurrency(e.target.value as 'YER' | 'SAR' | 'USD')}
+                    className="bg-transparent text-sm font-medium outline-none cursor-pointer"
+                    style={{ color: isDark ? '#888' : '#AAA' }}
+                  >
+                    <option value="YER">YER</option>
+                    <option value="SAR">SAR</option>
+                    <option value="USD">USD</option>
+                  </select>
                 </div>
               </div>
 
@@ -1496,7 +1503,7 @@ export default function DepositScreen() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-white/50 text-[10px]">الرصيد بعد الإيداع</p>
-                      <p className="text-white text-xl font-bold">${formatNumber(balanceAfterDeposit)} USD</p>
+                      <p className="text-white text-xl font-bold">${formatNumber(balanceAfterDeposit)} {depositCurrency} USD</p>
                     </div>
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.15)' }}>
                       <Wallet size={18} color="#FFF" strokeWidth={1.5} />
@@ -1562,14 +1569,21 @@ export default function DepositScreen() {
                     style={{ color: isDark ? '#FFF' : '#1a1a1a' }}
                     dir="ltr"
                   />
-                  <span className="text-sm font-medium" style={{ color: isDark ? '#888' : '#AAA' }}>
-                    USD
-                  </span>
+                  <select
+                    value={withdrawCurrency}
+                    onChange={(e) => setWithdrawCurrency(e.target.value as 'YER' | 'SAR' | 'USD')}
+                    className="bg-transparent text-sm font-medium outline-none cursor-pointer"
+                    style={{ color: isDark ? '#888' : '#AAA' }}
+                  >
+                    <option value="YER">YER</option>
+                    <option value="SAR">SAR</option>
+                    <option value="USD">USD</option>
+                  </select>
                 </div>
                 <div className="flex items-center gap-1 mt-1">
                   <Info size={10} color={isDark ? '#666' : '#AAA'} />
                   <span className="text-[10px]" style={{ color: isDark ? '#666' : '#AAA' }}>
-                    الرصيد المتاح: ${formatNumber(withdrawBalance)} USD
+                    الرصيد المتاح: ${formatNumber(withdrawBalance)} {withdrawCurrency}
                   </span>
                 </div>
               </div>
@@ -1913,7 +1927,7 @@ export default function DepositScreen() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-white/50 text-[10px]">الرصيد بعد السحب</p>
-                      <p className="text-white text-xl font-bold">${formatNumber(Math.max(0, balanceAfterWithdraw))} USD</p>
+                      <p className="text-white text-xl font-bold">${formatNumber(Math.max(0, balanceAfterWithdraw))} {withdrawCurrency} USD</p>
                       {balanceAfterWithdraw < 0 && (
                         <p className="text-[10px] mt-1" style={{ color: '#FCA5A5' }}>المبلغ يتجاوز الرصيد المتاح</p>
                       )}
