@@ -1,0 +1,59 @@
+name: Build User Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - uses: android-actions/setup-android@v4
+
+      - name: Install deps
+        run: npm install --legacy-peer-deps
+
+      - name: Build web
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: npm run build
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Decode keystore
+        working-directory: android
+        run: |
+          echo "${{ secrets.ANDROID_USER_KEYSTORE }}" | base64 -d > south-user.jks
+          printf 'storeFile=south-user.jks\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' \
+            "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+            "${{ secrets.ANDROID_USER_KEY_ALIAS }}" \
+            "${{ secrets.ANDROID_USER_KEY_PASSWORD }}" > keystore.properties
+
+      - name: Build APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+          mkdir -p ../outputs
+          cp app/build/outputs/apk/release/app-release.apk ../outputs/south-wallet-user.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: south-wallet-user-apk
+          path: outputs/south-wallet-user.apk
+          retention-days: 90
